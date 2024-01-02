@@ -9,3 +9,8 @@ _exit_failed:
 	mov rax, 0x3c		; exit syscall
 	mov rdi, 1			; exit value
 	syscall				; kernel interrupt
+
+_exit:
+	mov rdi, rax		; exit value from rax
+	mov rax, 0x3c		; exit syscall
+	syscall				; kernel interrupt
