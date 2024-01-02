@@ -3,3 +3,5 @@
 obj/*
 ## LIB
 **/*.a
+## test program
+test
