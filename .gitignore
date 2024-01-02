@@ -1,0 +1,5 @@
+# Compiled thing
+## OBJ
+obj/*
+## LIB
+**/*.a
