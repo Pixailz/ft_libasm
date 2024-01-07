@@ -1,9 +1,10 @@
 # Compiled thing
 ## OBJ
-obj/*
+**/*.o
 ## LIB
 **/*.a
 ## test program
+a.out
 test
 
 # Tester
