@@ -5,3 +5,7 @@ obj/*
 **/*.a
 ## test program
 test
+
+# Tester
+## Tripouille
+libasmTester/
