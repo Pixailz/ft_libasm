@@ -3,7 +3,7 @@ BITS 64
 %include "libasm.inc"
 
 section .data
-	text_variable db "test"
+	text_variable db ""
 
 section .text
 	global _start
