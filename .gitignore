@@ -1,5 +1,6 @@
 # Compiled thing
 ## OBJ
+obj/
 **/*.o
 ## LIB
 **/*.a

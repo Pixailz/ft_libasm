@@ -4,7 +4,7 @@ BITS 64
 %define _LIBASM_INC_
 
 %include "src/exit.s"
-%include "src/ft_strlen.s"
+%include "src/ft_strcmp.s"
 %include "src/hello_world.s"
 
 %endif

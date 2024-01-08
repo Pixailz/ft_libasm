@@ -4,20 +4,24 @@ section .text
 	global ft_strlen
 
 ft_strlen:
-	push rdi			; save register (const char *s) rdi
-	push rcx			; (int i) rcx
-	xor rcx, rcx		; set rcx to 0
-	cmp byte [rdi], 0x0	; if rdi == NULL
-	je _ft_strlen_end	; JMP IF EQUAL
-	not rcx				; flip all bit to have -1
+	; save register
+	push RDI				; RDI (const char *s)
+	push RCX				; RCX (int i)
+	xor RCX, RCX			; RCX = 0
+	cmp BYTE [RDI], 0x0		; if RDI == NULL
+	je _ft_strlen_end		; JMP IF EQUAL
+	not RCX					; RCX = -1
 
 _ft_strlen_loop:
-	repnz scasb		; repeat scasb until *rcx != 0
-	not rcx			; flip rcx back
-	sub rcx, 0x1	; rcx - 1
+	cld				; clear direction flag
+	xor AL, AL		;
+	repnz scasb		; repeat scasb until *RDI != al
+	not RCX			; flip RCX back
+	sub RCX, 0x1	; RCX -= 1
 
 _ft_strlen_end:
-	mov rax, rcx	; load [rcx - 1] into rax
-	pop rcx			; restore register
-	pop rdi			;
+	mov RAX, RCX	; load RCX into RAX
+	; restore register
+	pop RCX			;
+	pop RDI			;
 	ret				; ret
