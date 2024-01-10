@@ -26,9 +26,9 @@ _ft_strcmp_loop:
 	sub RSI, 0x1	; RSI - 1
 
 _ft_strcmp_end:
-	movzx RAX, BYTE [RSI]
-	movzx RDI, BYTE [RDI]
-	sub RAX, RDI
+	movzx RAX, BYTE [RDI]
+	movzx RSI, BYTE [RSI]
+	sub RAX, RSI
 	; restore register
 	pop RCX
 	pop RSI
