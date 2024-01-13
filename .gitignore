@@ -6,7 +6,10 @@ obj/
 **/*.a
 ## test program
 a.out
-test
+test*
+
+# .vscode folder
+.vscode
 
 # Tester
 ## Tripouille

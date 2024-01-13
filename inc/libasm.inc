@@ -1,10 +1,12 @@
-BITS 64
+%ifndef LIBASM_INC
+%define LIBASM_INC
 
-%ifndef _LIBASM_INC_
-%define _LIBASM_INC_
-
+; 0x00
 %include "src/exit.s"
-%include "src/ft_strcmp.s"
-%include "src/hello_world.s"
+%include "src/ft_strlen.s"
 
-%endif
+; 0x01
+%include "src/ft_strcmp.s"
+%include "src/ft_strcpy.s"
+
+%endif ; LIBASM_INC

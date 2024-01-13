@@ -1,9 +1,9 @@
 BITS 64
 
-%include "src/ft_strlen.s"
-
 section .text
 	global ft_strcmp
+
+extern ft_strlen
 
 ft_strcmp:
 	; save register
