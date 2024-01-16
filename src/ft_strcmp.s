@@ -7,9 +7,9 @@ extern ft_strlen
 
 ft_strcmp:
 	; save register
-	push RDI			; RDI (char *s1)
-	push RSI			; RSI (char *s2)
-	push RCX			; RCX (int i)
+	push RDI			; char *s1
+	push RSI			; char *s2
+	push RCX			; int i
 	call ft_strlen		; get s1 len
 	mov RCX, RAX		; move RAX into RCX
 	xchg RDI, RSI		; exchange RDI and RSI
