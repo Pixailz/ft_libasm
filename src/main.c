@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/01/16 23:46:56 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/01/17 00:22:34 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ int	test_strcmp(char *s1, char *s2, char mode)
 	return (r);
 }
 
+int	test_write(char *str)
+{
+	ft_write(1, str, strlen(str));
+	return (0);
+}
+
 int	main(void)
 {
 	test_strlen("1234");
@@ -81,5 +87,6 @@ int	main(void)
 	test_strcmp("1234", "1234", 'e');
 	test_strcmp("1234", "4321", 'l');
 	test_strcmp("4321", "1234", 'g');
+	test_write("Hello World\n");
 	return (0);
 }

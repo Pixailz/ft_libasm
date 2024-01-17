@@ -26,7 +26,8 @@ endif
 SRC_ASM				:=	exit.s \
 						ft_strlen.s \
 						ft_strcmp.s \
-						ft_strcpy.s
+						ft_strcpy.s \
+						ft_write.s
 
 OBJ_ASM				:= $(addprefix $(OBJ_DIR)/,$(SRC_ASM:%.s=%.o))
 SRC_ASM				:= $(addprefix $(SRC_DIR)/,$(SRC_ASM))
