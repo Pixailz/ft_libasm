@@ -1,5 +1,7 @@
 BITS 64
 
+extern __errno_location
+
 section .text
 	global ft_write
 
@@ -22,6 +24,6 @@ _ft_write_end:
 	ret
 
 _ft_write_error:
-	call	errno_location
-	mov RAX, [RAX]	;
+	call	__errno_location
+	mov RAX, [RAX];
 	jmp _ft_write_end
