@@ -6,12 +6,14 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/01/17 00:22:34 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/02/11 04:01:14 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+#include <unistd.h>
 
 #include "libasm.h"
 
@@ -74,19 +76,42 @@ int	test_strcmp(char *s1, char *s2, char mode)
 	return (r);
 }
 
-int	test_write(char *str)
+int	test_write(int fd, char *str, int size)
 {
-	ft_write(1, str, strlen(str));
+	int	retv[2] = {0};
+	int	err[2] = {0};
+
+	retv[0] = write(fd, str, size);
+	err[0] = errno;
+	printf("ft_write: real: errno %d\n", errno);
+	retv[1] = ft_write(fd, str, size);
+	err[1] = errno;
+	printf("ft_write: mine: errno %d\n", errno);
+	if (retv[0] == retv[1])
+		printf("ft_write: OK: retv\n");
+	else
+	{
+		printf("ft_write: KO: retv\n");
+		return (1);
+	}
+	if (err[0] == err[1])
+		printf("ft_write: OK: errno\n");
+	else
+	{
+		printf("ft_write: KO: errno\n");
+		return (1);
+	}
 	return (0);
 }
 
 int	main(void)
 {
-	test_strlen("1234");
-	test_strcpy("1234");
-	test_strcmp("1234", "1234", 'e');
-	test_strcmp("1234", "4321", 'l');
-	test_strcmp("4321", "1234", 'g');
-	test_write("Hello World\n");
+	// test_strlen("1234");
+	// test_strcpy("1234");
+	// test_strcmp("1234", "1234", 'e');
+	// test_strcmp("1234", "4321", 'l');
+	// test_strcmp("4321", "1234", 'g');
+	test_write(1, "Hello World\n", 13);
+	test_write(-1, "Hello World\n", 13);
 	return (0);
 }

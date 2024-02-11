@@ -51,7 +51,7 @@ re: 				fclean all
 
 $(PROG_NAME_ASM):		re
 	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
-	$(LD) $(LDFLAGS) $(NAME) $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
+	$(CC) $(CCFLAGS) $(NAME) $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM) 2>/dev/null
 
 run_asm:				$(PROG_NAME_ASM)
 	./$(PROG_NAME_ASM)

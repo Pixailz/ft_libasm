@@ -12,9 +12,10 @@ ft_write:
 	push RDX			; size_t count
 
 _ft_write:
-	mov RAX, 0x01		; write syscall
-	syscall
-	jc _ft_write_error
+	mov RAX, 0x1		; write syscall
+	syscall				; syscall
+	cmp RAX, 0x0		; check if error while syscall
+	jl _ft_write_error	; if so
 
 _ft_write_end:
 	; restore register
@@ -24,6 +25,9 @@ _ft_write_end:
 	ret
 
 _ft_write_error:
-	call	__errno_location
-	mov RAX, [RAX];
+	neg RAX								; reverse syscal return, to get errno
+	mov RCX, RAX						; save RAX
+	call __errno_location WRT ..plt		; get errno location into RAX
+	mov [RAX], RCX;						; set errno according to saved RAX
+	mov RAX, -1							; set retv to -1
 	jmp _ft_write_end
