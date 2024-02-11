@@ -5,6 +5,7 @@
 %include "src/exit.s"
 %include "src/ft_strlen.s"
 %include "src/ft_write.s"
+%include "src/ft_read.s"
 
 ; 0x01
 %include "src/ft_strcmp.s"

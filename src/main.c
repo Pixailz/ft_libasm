@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/02/11 04:01:14 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/02/11 05:11:39 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,44 @@ int	test_write(int fd, char *str, int size)
 	return (0);
 }
 
+int	test_read(int fd, int size)
+{
+	char	buff1[0x42] = {0};
+	char	buff2[0x42] = {0};
+	int		err[2] = {0};
+	int		retv[2] = {0};
+	int		r = 0;
+
+	retv[0] = read(fd, buff1, size);
+	err[0] = errno;
+	printf("ft_read: real: errno %d\n", errno);
+	retv[1] = ft_read(fd, buff2, size);
+	err[1] = errno;
+	printf("ft_read: mine: errno %d\n", errno);
+	if (retv[0] == retv[1])
+		printf("ft_read: OK: retv\n");
+	else
+	{
+		printf("ft_read: KO: retv\n");
+		r |= 1;
+	}
+	if (err[0] == err[1])
+		printf("ft_read: OK: errno\n");
+	else
+	{
+		printf("ft_read: KO: errno\n");
+		r |= 1;
+	}
+	if (!strcmp(buff1, buff2))
+		printf("ft_read: OK: buff\n");
+	else
+	{
+		r |= 1;
+		printf("ft_read: KO: buff\n");
+	}
+	return (r);
+}
+
 int	main(void)
 {
 	// test_strlen("1234");
@@ -111,7 +149,8 @@ int	main(void)
 	// test_strcmp("1234", "1234", 'e');
 	// test_strcmp("1234", "4321", 'l');
 	// test_strcmp("4321", "1234", 'g');
-	test_write(1, "Hello World\n", 13);
-	test_write(-1, "Hello World\n", 13);
+	// test_write(1, "Hello World\n", 13);
+	// test_write(-1, "Hello World\n", 13);
+	test_read(0, 10);
 	return (0);
 }

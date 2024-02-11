@@ -27,7 +27,8 @@ SRC_ASM				:=	exit.s \
 						ft_strlen.s \
 						ft_strcmp.s \
 						ft_strcpy.s \
-						ft_write.s
+						ft_write.s \
+						ft_read.s
 
 OBJ_ASM				:= $(addprefix $(OBJ_DIR)/,$(SRC_ASM:%.s=%.o))
 SRC_ASM				:= $(addprefix $(SRC_DIR)/,$(SRC_ASM))
@@ -49,12 +50,14 @@ fclean:				clean
 
 re: 				fclean all
 
-$(PROG_NAME_ASM):		re
-	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
-	$(CC) $(CCFLAGS) $(NAME) $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM) 2>/dev/null
+# TODO: fix compilation with the main from assembly
+# $(PROG_NAME_ASM):		re
+# 	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
+# 	$(CC) $(CCFLAGS) $(NAME) $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
 
-run_asm:				$(PROG_NAME_ASM)
-	./$(PROG_NAME_ASM)
+# run_asm:				$(PROG_NAME_ASM)
+# 	./$(PROG_NAME_ASM)
+
 
 $(PROG_NAME_C):		re
 	$(CC) $(CCFLAGS) $(SRC_DIR)/main.c $(NAME) -o $(PROG_NAME_C)
