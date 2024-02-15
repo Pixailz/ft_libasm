@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/02/11 05:11:39 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/02/15 04:56:21 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 int	test_strlen(char *str)
 {
-	unsigned int real_size = strlen(str);
 	unsigned int mine_size = ft_strlen(str);
+	unsigned int real_size = strlen(str);
 	int retv = 0;
 
 	if (real_size == mine_size)
@@ -144,6 +144,7 @@ int	test_read(int fd, int size)
 
 int	main(void)
 {
+	test_strlen(NULL);
 	// test_strlen("1234");
 	// test_strcpy("1234");
 	// test_strcmp("1234", "1234", 'e');
@@ -151,6 +152,6 @@ int	main(void)
 	// test_strcmp("4321", "1234", 'g');
 	// test_write(1, "Hello World\n", 13);
 	// test_write(-1, "Hello World\n", 13);
-	test_read(0, 10);
+	// test_read(0, 10);
 	return (0);
 }

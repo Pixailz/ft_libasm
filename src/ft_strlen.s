@@ -8,7 +8,7 @@ ft_strlen:
 	push RDI				; const char *s
 	push RCX				; int i
 	xor RCX, RCX			; RCX = 0
-	cmp BYTE [RDI], 0x0		; if RDI == NULL
+	cmp RDI, 0x0			; if RDI == NULL
 	je _ft_strlen_end		; JMP IF EQUAL
 	not RCX					; RCX = -1
 
