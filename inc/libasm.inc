@@ -1,6 +1,10 @@
 %ifndef LIBASM_INC
 %define LIBASM_INC
 
+; CORRECTLY INCLUDING THIS MF** OF __errno_location
+extern __errno_location
+global __errno_location
+
 ; 0x00
 %include "src/exit.s"
 %include "src/ft_strlen.s"

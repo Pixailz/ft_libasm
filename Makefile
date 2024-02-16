@@ -13,7 +13,7 @@ ASM					:= nasm
 ASMFLAGS			:= -Iinc -f elf64 -Wall
 
 CC					:= gcc
-CCFLAGS				:= -z noexecstack -Iinc -Wall -Wextra
+CCFLAGS				:= -z noexecstack -Iinc -Wall -Wextra -fPIC
 
 ifeq ($(DEBUG),1)
 ASMFLAGS			+= -ggdb -F dwarf
@@ -51,12 +51,13 @@ fclean:				clean
 re: 				fclean all
 
 # TODO: fix compilation with the main from assembly
-# $(PROG_NAME_ASM):		re
-# 	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
-# 	$(CC) $(CCFLAGS) $(NAME) $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
+# $(CC) $(CCFLAGS) -nostartfiles -nostdlib $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
+$(PROG_NAME_ASM):		re
+	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
+	$(CC) $(CCFLAGS) -nostdlib $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
 
-# run_asm:				$(PROG_NAME_ASM)
-# 	./$(PROG_NAME_ASM)
+run_asm:				$(PROG_NAME_ASM)
+	./$(PROG_NAME_ASM)
 
 
 $(PROG_NAME_C):		re
