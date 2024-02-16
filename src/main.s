@@ -21,7 +21,8 @@ _start:
 	; jmp _test_ft_strcmp
 	; jmp _test_ft_strcpy
 	; jmp _test_ft_write
-	jmp _test_ft_read
+	; jmp _test_ft_read
+	jmp _test_ft_strdup
 
 _test_ft_strlen:
 	mov RDI, t1			; set text addr to RDI
@@ -55,6 +56,11 @@ _test_ft_read:
 	mov RDI, 0x1
 	call ft_write
 	jmp _end			; goto end
+
+_test_ft_strdup:
+	mov RDI, t1			; set arg1
+	call ft_strdup
+	jmp _end
 
 _end:
 	call _exit_success

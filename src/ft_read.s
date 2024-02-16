@@ -1,9 +1,9 @@
 BITS 64
 
-extern __errno_location
-
 section .text
 	global ft_read
+
+extern __errno_location
 
 ft_read:
 	; save register

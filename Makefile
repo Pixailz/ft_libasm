@@ -28,7 +28,8 @@ SRC_ASM				:=	exit.s \
 						ft_strcmp.s \
 						ft_strcpy.s \
 						ft_write.s \
-						ft_read.s
+						ft_read.s \
+						ft_strdup.s
 
 OBJ_ASM				:= $(addprefix $(OBJ_DIR)/,$(SRC_ASM:%.s=%.o))
 SRC_ASM				:= $(addprefix $(SRC_DIR)/,$(SRC_ASM))
@@ -54,7 +55,7 @@ re: 				fclean all
 # $(CC) $(CCFLAGS) -nostartfiles -nostdlib $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
 $(PROG_NAME_ASM):		re
 	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
-	$(CC) $(CCFLAGS) -nostdlib $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
+	$(CC) $(CCFLAGS) -nostartfiles $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
 
 run_asm:				$(PROG_NAME_ASM)
 	./$(PROG_NAME_ASM)

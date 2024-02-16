@@ -14,5 +14,6 @@ global __errno_location
 ; 0x01
 %include "src/ft_strcmp.s"
 %include "src/ft_strcpy.s"
+%include "src/ft_strdup.s"
 
 %endif ; LIBASM_INC
