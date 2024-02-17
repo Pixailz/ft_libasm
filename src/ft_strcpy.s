@@ -17,7 +17,7 @@ ft_strcpy:
 
 _ft_strcpy_loop:
 	cld				; clear direction flag
-	repz movsb		; repeat until *rdi != al
+	repz movsb		; repeat while RCX > 0
 
 _ft_strcpy_end:
 	mov BYTE [RDI], 0x0

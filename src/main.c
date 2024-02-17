@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/02/15 04:56:21 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:13:40 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,31 @@ int	test_read(int fd, int size)
 	return (r);
 }
 
+int	test_strdup(const char *str)
+{
+	int r = 0;
+
+	// printf("before:        '%s'\n", str);
+	// printf("before strlen: %ld\n", strlen(str));
+	char *ret = ft_strdup(str);
+	// printf("after:         '%s'\n", str);
+	// printf("after strlen:  %ld\n", strlen(str));
+	// printf("ret:           '%s'\n", ret);
+	// printf("ret strlen:    %ld\n", strlen(ret));
+	if (strcmp(str, ret))
+	{
+		printf("ft_strdup: error\n");
+		r |= 1;
+	}
+	else
+		printf("ft_strdup: good\n");
+	// free(ret);
+	return (r);
+}
+
 int	main(void)
 {
-	test_strlen(NULL);
+	// test_strlen(NULL);
 	// test_strlen("1234");
 	// test_strcpy("1234");
 	// test_strcmp("1234", "1234", 'e');
@@ -153,5 +175,8 @@ int	main(void)
 	// test_write(1, "Hello World\n", 13);
 	// test_write(-1, "Hello World\n", 13);
 	// test_read(0, 10);
+	// test_strdup("Hello");
+	// test_strdup("");
+	test_strdup(NULL); // SEGFAULT on both libc and libasm ...
 	return (0);
 }

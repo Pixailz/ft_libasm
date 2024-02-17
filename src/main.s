@@ -5,6 +5,7 @@ BITS 64
 section .data
 	t1 DB "Test", 0
 	t2 DB "test", 0
+	nl DB 0x0a
 	src DB "1234", 0
 	hello_world DB "Hello world", 0x0A, 0
 	hello_world_len EQU $ - hello_world
@@ -57,9 +58,36 @@ _test_ft_read:
 	call ft_write
 	jmp _end			; goto end
 
+
 _test_ft_strdup:
 	mov RDI, t1			; set arg1
 	call ft_strdup
+	push RAX
+
+	mov RDI, 0x1
+	mov RSI, t1
+	mov RDX, 0x4
+	call ft_write
+
+	mov RDI, 0x1
+	mov RSI, nl
+	mov RDX, 0x1
+	call ft_write
+
+	pop RDI
+	push RDI
+
+	call ft_strlen
+	mov RDX, RAX
+	pop RSI
+	mov RDI, 0x1
+	call ft_write
+
+	mov RDI, 0x1
+	mov RSI, nl
+	mov RDX, 0x1
+	call ft_write
+
 	jmp _end
 
 _end:
