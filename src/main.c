@@ -6,9 +6,11 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/02/17 19:13:40 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/02/24 02:36:27 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+/* INCLUDE */
 
 #include <stdio.h>
 #include <string.h>
@@ -16,167 +18,223 @@
 #include <unistd.h>
 
 #include "libasm.h"
+#include "ansi.h"
 
-int	test_strlen(char *str)
+/* ERR STATUS */
+# define ERR_STRLEN				1UL<<1
+
+# define ERR_STRCPY_PTR			1UL<<2
+# define ERR_STRCPY_CMP			1UL<<3
+
+# define ERR_STRCMP_RET			1UL<<4
+
+# define ERR_WRITE_RET			1UL<<5
+# define ERR_WRITE_ERR			1UL<<6
+
+# define ERR_READ_RET			1UL<<7
+# define ERR_READ_ERR			1UL<<8
+# define ERR_READ_BUF			1UL<<9
+
+# define ERR_STRDUP_CMP			1UL<<10
+
+int	ERR = 0;
+
+/* PRINT */
+void	ppart(char *s)
+{ printf("%s%s%s", P_PART, s, GOTO_RESULT); }
+
+void	pok(char *s)
+{ if (!s) printf("%s", P_OK);
+  else printf("[%s%s%s]", GRE, s, RST); }
+
+void	pko(char *s)
+{ if (!s) printf("%s", P_KO);
+  else printf("[%s%s%s]", RED, s, RST); }
+
+void	perrno(char *k, int err)
+{ printf("[%serrno%s] %s%s%d", BLU, RST, k, SEP, err); }
+
+/* TEST WRAPPER */
+void	w_strlen(char *str)
 {
 	unsigned int mine_size = ft_strlen(str);
 	unsigned int real_size = strlen(str);
-	int retv = 0;
 
 	if (real_size == mine_size)
-		printf("ft_strlen: OK: size\n");
+		pok("size");
 	else
 	{
+		pko("size");
 		printf("ft_strlen: KO: size\n");
-		retv |= 1;
+		ERR |= ERR_STRLEN;
 	}
-	return (retv);
 }
 
-int	test_strcpy(char *src)
+void	w_strcpy(char *src)
 {
 	char	buffer[100] = {0};
 	char	*ptr;
-	int		retv = 0;
 
 	ptr = ft_strcpy(buffer, src);
 	if (ptr == buffer)
-		printf("ft_strcpy: OK: ptr\n");
+		pok("ptr");
 	else
 	{
-		printf("ft_strcpy: KO: ptr\n");
-		retv |= 1;
+		pko("ptr");
+		ERR |= ERR_STRCPY_PTR;
 	}
 	if (!strcmp(buffer, src))
-		printf("ft_strcpy: OK: strcmp\n");
+		pok("cmp");
 	else
 	{
-		retv |= 1;
-		printf("ft_strcpy: KO: strcmp\n");
+		pko("cmp");
+		ERR |= ERR_STRCPY_CMP;
 	}
-	return (retv);
 }
 
-int	test_strcmp(char *s1, char *s2, char mode)
+void	w_strcmp(char *s1, char *s2, char mode)
 {
 	int retv = ft_strcmp(s1, s2);
-	int r = 0;
 
 	if (mode == 'e' && retv == 0)
-		printf("ft_strcmp: OK: retv == 0\n");
+		pok("retv == 0");
 	else if (mode == 'l' && retv < 0)
-		printf("ft_strcmp: OK: retv < 0\n");
+		pok("retv < 0");
 	else if (mode == 'g' && retv > 0)
-		printf("ft_strcmp: OK: retv > 0\n");
+		pok("retv > 0");
 	else
 	{
-		printf("ft_strcmp: KO: retv\n");
-		r |= 1;
+		pko("retv > 0");
+		ERR |= ERR_STRCMP_RET;
 	}
-	return (r);
 }
 
-int	test_write(int fd, char *str, int size)
+void	w_write(int fd, char *str, int size)
 {
 	int	retv[2] = {0};
 	int	err[2] = {0};
 
 	retv[0] = write(fd, str, size);
 	err[0] = errno;
-	printf("ft_write: real: errno %d\n", errno);
+	perrno("libc errno", err[0]);
 	retv[1] = ft_write(fd, str, size);
 	err[1] = errno;
-	printf("ft_write: mine: errno %d\n", errno);
+	perrno("test errno", err[1]);
 	if (retv[0] == retv[1])
-		printf("ft_write: OK: retv\n");
+		pok("retv");
 	else
 	{
-		printf("ft_write: KO: retv\n");
-		return (1);
+		pko("retv");
+		ERR |= ERR_WRITE_RET;
 	}
 	if (err[0] == err[1])
-		printf("ft_write: OK: errno\n");
+		pok("err");
 	else
 	{
-		printf("ft_write: KO: errno\n");
-		return (1);
+		pko("err");
+		ERR |= ERR_WRITE_ERR;
 	}
-	return (0);
 }
 
-int	test_read(int fd, int size)
+void	w_read(int fd, int size)
 {
 	char	buff1[0x42] = {0};
 	char	buff2[0x42] = {0};
 	int		err[2] = {0};
 	int		retv[2] = {0};
-	int		r = 0;
 
 	retv[0] = read(fd, buff1, size);
 	err[0] = errno;
-	printf("ft_read: real: errno %d\n", errno);
+	perrno("libc errno", err[0]);
 	retv[1] = ft_read(fd, buff2, size);
 	err[1] = errno;
-	printf("ft_read: mine: errno %d\n", errno);
+	perrno("test errno", err[1]);
 	if (retv[0] == retv[1])
-		printf("ft_read: OK: retv\n");
+		pok("retv");
 	else
 	{
-		printf("ft_read: KO: retv\n");
-		r |= 1;
+		pko("retv");
+		ERR |= ERR_READ_RET;
 	}
 	if (err[0] == err[1])
-		printf("ft_read: OK: errno\n");
+		pok("err");
 	else
 	{
-		printf("ft_read: KO: errno\n");
-		r |= 1;
+		pko("err");
+		ERR |= ERR_READ_ERR;
 	}
 	if (!strcmp(buff1, buff2))
-		printf("ft_read: OK: buff\n");
+		pok("buff");
 	else
 	{
-		r |= 1;
-		printf("ft_read: KO: buff\n");
+		pko("buff");
+		ERR |= ERR_READ_BUF;
 	}
-	return (r);
 }
 
-int	test_strdup(const char *str)
+void	w_strdup(const char *str)
 {
-	int r = 0;
 
-	// printf("before:        '%s'\n", str);
-	// printf("before strlen: %ld\n", strlen(str));
 	char *ret = ft_strdup(str);
-	// printf("after:         '%s'\n", str);
-	// printf("after strlen:  %ld\n", strlen(str));
-	// printf("ret:           '%s'\n", ret);
-	// printf("ret strlen:    %ld\n", strlen(ret));
 	if (strcmp(str, ret))
 	{
-		printf("ft_strdup: error\n");
-		r |= 1;
+		pko("cmp");
+		ERR |= ERR_STRDUP_CMP;
 	}
 	else
-		printf("ft_strdup: good\n");
-	// free(ret);
-	return (r);
+		pok("cmp");
+}
+
+/* MAIN */
+void	test_strlen(void)
+{
+	ppart("ft_strlen");
+	// w_strlen(NULL);
+	w_strlen("1234");
+}
+
+void	test_strcpy(void)
+{
+	ppart("ft_strcpy");
+	w_strcpy("1234");
+}
+
+void	test_strcmp(void)
+{
+	ppart("ft_strcmp");
+	w_strcmp("1234", "1234", 'e');
+	w_strcmp("1234", "4321", 'l');
+	w_strcmp("4321", "1234", 'g');
+}
+
+void	test_write(void)
+{
+	ppart("ft_write");
+	w_write(1, "Hello World\n", 13);
+	w_write(-1, "Hello World\n", 13);
+}
+
+void	test_read(void)
+{
+	ppart("ft_read");
+	// w_read(0, 10);
+}
+
+void	test_strdup(void)
+{
+	ppart("ft_strdup");
+	w_strdup("Hello");
+	w_strdup("");
+	// w_strdup(NULL); // SEGFAULT on both libc and libasm ...
 }
 
 int	main(void)
 {
-	// test_strlen(NULL);
-	// test_strlen("1234");
-	// test_strcpy("1234");
-	// test_strcmp("1234", "1234", 'e');
-	// test_strcmp("1234", "4321", 'l');
-	// test_strcmp("4321", "1234", 'g');
-	// test_write(1, "Hello World\n", 13);
-	// test_write(-1, "Hello World\n", 13);
-	// test_read(0, 10);
-	// test_strdup("Hello");
-	// test_strdup("");
-	test_strdup(NULL); // SEGFAULT on both libc and libasm ...
+	test_strlen();		puts("");
+	test_strcpy();		puts("");
+	test_strcmp();		puts("");
+	test_write();		puts("");
+	test_read();		puts("");
+	test_strdup();		puts("");
 	return (0);
 }

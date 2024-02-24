@@ -66,3 +66,6 @@ $(PROG_NAME_C):		re
 
 run_c:				$(PROG_NAME_C)
 	./$(PROG_NAME_C)
+
+run_c_pre:			$(PROG_NAME_C)
+	gcc -E $(CCFLAGS) $(SRC_DIR)/main.c $(NAME) -o $(PROG_NAME_C).d
