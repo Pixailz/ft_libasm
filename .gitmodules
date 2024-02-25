@@ -1,0 +1,3 @@
+[submodule "libasm_tester"]
+	path = libasm_tester
+	url = git@github.com:Pixailz/libasm_tester
