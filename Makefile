@@ -34,38 +34,62 @@ SRC_ASM				:=	exit.s \
 OBJ_ASM				:= $(addprefix $(OBJ_DIR)/,$(SRC_ASM:%.s=%.o))
 SRC_ASM				:= $(addprefix $(SRC_DIR)/,$(SRC_ASM))
 
-all: 				$(NAME)
+TESTER_DIR			:= libasm_tester
+TESTER_CMD			:= run
+TESTER_GIT			:= https://github.com/Pixailz/libasm_tester
+
+MAKECMD				:= make -s
+INFO				= @echo -e [\\x1b[32m+\\x1b[0m] $(1)
+
+# USUAL RULES
+all: 				print_obj $(NAME)
 
 $(NAME): 			$(OBJ_ASM)
+	$(call INFO,Creating libasm archive)
 	ar rcs $(NAME) $(OBJ_ASM)
+
+print_obj:
+	$(call INFO,Compiling object)
 
 $(OBJ_ASM): 		$(OBJ_DIR)/%.o: $(SRC_DIR)/%.s
 	@[ ! -d $(@D) ] && mkdir -p $(@D) || true
 	$(ASM) $(ASMFLAGS) $< -o $@
 
 clean:
+	$(call INFO,Cleaning libasm)
 	rm -rf $(OBJ_ASM)
 
 fclean:				clean
+	$(call INFO,Full cleaning libasm)
 	rm -rf $(NAME) $(PROG_NAME)
 
 re: 				fclean all
 
-# TODO: fix compilation with the main from assembly
-# $(CC) $(CCFLAGS) -nostartfiles -nostdlib $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
+# RUNNING PROGRAM
 $(PROG_NAME_ASM):		re
+	$(call INFO,Compiling ASM program)
 	$(ASM) $(ASMFLAGS) $(SRC_DIR)/main.s -o $(OBJ_DIR)/main.o
 	$(CC) $(CCFLAGS) -nostartfiles $(NAME) -lc $(OBJ_DIR)/main.o -o $(PROG_NAME_ASM)
 
 run_asm:				$(PROG_NAME_ASM)
+	$(call INFO,Running ASM program)
 	./$(PROG_NAME_ASM)
 
-
 $(PROG_NAME_C):		re
+	$(call INFO,Compiling C program)
 	$(CC) $(CCFLAGS) $(SRC_DIR)/main.c $(NAME) -o $(PROG_NAME_C)
 
 run_c:				$(PROG_NAME_C)
+	$(call INFO,Running C program)
 	./$(PROG_NAME_C)
 
 run_c_pre:			$(PROG_NAME_C)
+	$(call INFO,Preprocessing file $(PROG_NAME_C).d)
 	gcc -E $(CCFLAGS) $(SRC_DIR)/main.c $(NAME) -o $(PROG_NAME_C).d
+
+# TESTER
+$(TESTER_DIR):
+	git clone $(TESTER_GIT)
+
+test:				$(TESTER_DIR)
+	$(MAKECMD) -C $(TESTER_DIR) $(TESTER_CMD)
