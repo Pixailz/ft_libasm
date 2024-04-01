@@ -93,3 +93,4 @@ $(TESTER_DIR):
 
 test:				$(TESTER_DIR)
 	$(MAKECMD) -C $(TESTER_DIR) $(TESTER_CMD)
+	cat $(TESTER_DIR)/exec.log
