@@ -29,8 +29,10 @@ ft_strdup:
 	je _ft_strdup_error		;
 
 	push RAX				; save malloc head
+	mov RDI, RAX
 	cld						; clear direction flags
 	repz movsb				; do *RSI++ == *RDI++ until RCX != 0
+
 	mov BYTE [RDI], 0x0		; add null byte
 	pop RAX					; get back head of malloc
 

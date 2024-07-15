@@ -39,7 +39,7 @@ TESTER_CMD			:= run
 TESTER_GIT			:= https://github.com/Pixailz/libasm_tester
 
 MAKECMD				:= make -s
-INFO				= @echo -e [\\x1b[32m+\\x1b[0m] $(1)
+INFO				= @/usr/bin/echo -e [\\x1b[32m+\\x1b[0m] $(1)
 
 # USUAL RULES
 all: 				print_obj $(NAME)
@@ -92,5 +92,6 @@ $(TESTER_DIR):
 	git clone $(TESTER_GIT)
 
 test:				$(TESTER_DIR)
+	make -C $(TESTER_DIR)
 	$(MAKECMD) -C $(TESTER_DIR) $(TESTER_CMD)
 	cat $(TESTER_DIR)/exec.log
