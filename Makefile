@@ -93,5 +93,5 @@ $(TESTER_DIR):
 
 test:				$(TESTER_DIR)
 	make -C $(TESTER_DIR)
-	$(MAKECMD) -C $(TESTER_DIR) $(TESTER_CMD)
+	$(MAKECMD) -C $(TESTER_DIR) $(TESTER_CMD) ; \
 	cat $(TESTER_DIR)/exec.log
