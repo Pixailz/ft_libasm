@@ -7,8 +7,8 @@ ft_strlen:
 	push			RDI					; save RDI
 	push			RCX					; save RCX
 	xor				RCX, RCX			; set RCX = 0
-	cmp RDI, 0x0						; check if RDI == null
-	je _ft_strlen_end					; jump if equal
+	cmp 			RDI, 0x0			; check if RDI == null
+	je				_ft_strlen_end		; jump if equal
 	pxor			XMM0, XMM0			; set XMM0 = 0
 
 _ft_strlen_loop:
@@ -18,14 +18,11 @@ _ft_strlen_loop:
 	test			RAX, RAX			; test RAX
 	jnz				_ft_strlen_zfound	; jump if RAX != 0
 	add				RCX, 0x10			; add 0x10 to RCX
-	jmp _ft_strlen_loop					; loop until zero is found
+	jmp				_ft_strlen_loop		; loop until zero is found
 
 _ft_strlen_zfound:
-	test			AL, 1				; test AL & 1
-	jnz				_ft_strlen_end		; jump if AL & 1 != 0
-	add				RCX, 1				; add 0x1 to RCX
-	sar				RAX, 1				; divide by 2
-	jmp				_ft_strlen_zfound	; loop until AL & 1 != 0
+	bsf				RDI, RAX			; scan for first bit
+	add				RCX, RDI			; add index of first bit to RCX
 
 _ft_strlen_end:
 	mov				RAX, RCX			; copy RCX into RAX
