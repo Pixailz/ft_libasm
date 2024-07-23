@@ -4,24 +4,32 @@ section .text
 	global ft_strlen
 
 ft_strlen:
-	; save register
-	push RDI				; const char *s
-	push RCX				; int i
-	xor RCX, RCX			; RCX = 0
-	cmp RDI, 0x0			; if RDI == NULL
-	je _ft_strlen_end		; JMP IF EQUAL
-	not RCX					; RCX = -1
+	push			RDI					; save RDI
+	push			RCX					; save RCX
+	xor				RCX, RCX			; set RCX = 0
+	cmp RDI, 0x0						; check if RDI == null
+	je _ft_strlen_end					; jump if equal
+	pxor			XMM0, XMM0			; set XMM0 = 0
 
 _ft_strlen_loop:
-	cld				; clear direction flag
-	xor AL, AL		;
-	repnz scasb		; repeat scasb until *RDI != al
-	not RCX			; flip RCX back
-	sub RCX, 0x1	; RCX -= 1
+	movdqu			XMM1, [RDI + RCX]	; load *(RDI + RCX) into XMM1
+	vpcmpeqb		XMM0, XMM1			; search for XMM0 in XMM1
+	vpmovmskb		RAX, XMM0			; convert XMM0 into a mask
+	test			RAX, RAX			; test RAX
+	jnz				_ft_strlen_zfound	; jump if RAX != 0
+	add				RCX, 0x10			; add 0x10 to RCX
+	jmp _ft_strlen_loop					; loop until zero is found
+
+_ft_strlen_zfound:
+	test			AL, 1				; test AL & 1
+	jnz				_ft_strlen_end		; jump if AL & 1 != 0
+	add				RCX, 1				; add 0x1 to RCX
+	sar				RAX, 1				; divide by 2
+	jmp				_ft_strlen_zfound	; loop until AL & 1 != 0
 
 _ft_strlen_end:
-	mov RAX, RCX	; load RCX into RAX
-	; restore register
-	pop RCX			;
-	pop RDI			;
-	ret				; ret
+	mov				RAX, RCX			; copy RCX into RAX
+	pop				RCX					; restore RCX
+	pop				RDI					; restore RDI
+	ret
+
