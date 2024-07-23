@@ -24,7 +24,7 @@ CCFLAGS				+= -Werror
 endif
 
 SRC_ASM				:=	exit.s \
-						ft_strlen.s \
+						ft_strlen.avx.s \
 						ft_strcmp.s \
 						ft_strcpy.s \
 						ft_write.s \
